@@ -69,3 +69,12 @@ Referrer-Policy: strict-origin-when-cross-origin
 - **Map loads on demand:** the Google Maps iframe is only inserted when the map scrolls within ~400px of the screen, so visitors who never reach the bottom never download it. "Get directions" and "Open in Maps" buttons sit under it (and work without JavaScript).
 - **Floating WhatsApp button** hides while the contact section is on screen so it never covers the form.
 - **Caching:** GitHub Pages sends `Cache-Control: max-age=600` plus ETag/Last-Modified, so repeat visits are served from the browser cache and updates show within ~10 minutes. No service worker is used on purpose (avoids stale contact details).
+
+## Before every commit that changes CSS, JS or images
+```
+python tools/stamp_versions.py
+```
+This adds a content fingerprint (`?v=…`) to each CSS/JS/image link in `index.html` and `404.html`.
+GitHub Pages lets browsers cache files for 10 minutes; without new fingerprints a visitor can get the
+new page with old scripts/styles right after a deploy, and features (map, menu, form) can break.
+Fonts are intentionally not fingerprinted (they are preloaded and must match `css/fonts.css`).
