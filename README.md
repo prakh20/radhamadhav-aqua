@@ -48,7 +48,7 @@ Alternatives that work just as well: Netlify (drag-and-drop the folder) or GitHu
 - External links use `rel="noopener noreferrer"`; the map iframe is sandboxed; referrer policy is `strict-origin-when-cross-origin`.
 - Form input is length-limited in HTML and cleaned in JS (control characters removed, trimmed, capped).
 - Without JavaScript the page still shows all content (`css/noscript.css`).
-- `404.html` uses `<base href="/radhamadhav-aqua/">` — change it to `/` when a custom domain is added.
+- `404.html` uses `<base href="/">` (custom domain `radhamadavgroup.com`, set in the `CNAME` file). If the site ever moves back to a github.io project URL, change it to `/radhamadhav-aqua/`.
 
 ### Limits of GitHub Pages
 GitHub Pages can't send custom HTTP headers, so these can't be set yet: `Strict-Transport-Security` (github.io is already HSTS-preloaded), `X-Frame-Options` / CSP `frame-ancestors` (clickjacking), `Permissions-Policy`, `X-Content-Type-Options` (GitHub already sends `nosniff`).
