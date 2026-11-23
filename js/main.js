@@ -46,18 +46,63 @@
   // Enquiry form -> pre-filled WhatsApp message (no backend needed)
   const form = document.getElementById("orderForm");
   const note = document.getElementById("formNote");
+  const nameInput = form.elements.name;
+  const phoneInput = form.elements.phone;
+
+  // Indian mobile numbers only: 10 digits starting 6-9. Accepts pasted "+91 98765 43210",
+  // "919876543210" or "09876543210" and keeps just the 10-digit number.
+  const toIndianMobile = (v) => {
+    let d = String(v).replace(/\D/g, "");
+    if (d.length > 10 && d.startsWith("91")) d = d.slice(2);
+    else if (d.length > 10 && d.startsWith("0")) d = d.slice(1);
+    return d.slice(0, 10);
+  };
+  phoneInput.addEventListener("input", () => {
+    const v = toIndianMobile(phoneInput.value);
+    if (phoneInput.value !== v) phoneInput.value = v;
+  });
+
+  // Returns an error message, or "" when the field is fine
+  const checks = {
+    name: () => {
+      const v = nameInput.value.trim();
+      if (!v) return "Please enter your name.";
+      if (!/^[\p{L}\p{M}][\p{L}\p{M} .'-]*$/u.test(v) || (v.match(/\p{L}/gu) || []).length < 2)
+        return "Please enter a valid name (letters only).";
+      return "";
+    },
+    phone: () => {
+      const v = toIndianMobile(phoneInput.value);
+      if (!v) return "Please enter your mobile number.";
+      if (!/^[6-9]\d{9}$/.test(v)) return "Please enter a valid 10-digit Indian mobile number (starts with 6, 7, 8 or 9).";
+      return "";
+    },
+  };
+  const showNote = (msg, isError) => { note.textContent = msg; note.classList.toggle("is-error", !!isError); };
+  // Clear the red border as soon as the visitor fixes a field
+  [nameInput, phoneInput].forEach((f) => f.addEventListener("input", () => {
+    if (!f.classList.contains("is-invalid") || checks[f.name]()) return;
+    f.classList.remove("is-invalid");
+    f.removeAttribute("aria-invalid");
+    // Keep showing only the errors that are still there
+    const left = [nameInput, phoneInput].filter((x) => x.classList.contains("is-invalid")).map((x) => checks[x.name]());
+    showNote(left.join(" "), left.length > 0);
+  }));
+
   form.addEventListener("submit", (ev) => {
     ev.preventDefault();
-    let ok = true;
-    form.querySelectorAll("[required]").forEach((f) => {
-      const bad = !f.checkValidity();
-      f.classList.toggle("is-invalid", bad);
-      if (bad) ok = false;
+    const errors = [];
+    [nameInput, phoneInput].forEach((f) => {
+      const msg = checks[f.name]();
+      f.classList.toggle("is-invalid", !!msg);
+      if (msg) { f.setAttribute("aria-invalid", "true"); errors.push(msg); } else f.removeAttribute("aria-invalid");
     });
-    if (!ok) {
-      note.textContent = "Please enter your name and a valid phone number.";
+    if (errors.length) {
+      showNote(errors.join(" "), true);
+      form.querySelector(".is-invalid").focus();
       return;
     }
+    const mobile = toIndianMobile(phoneInput.value);
     const raw = new FormData(form);
     // Clean user input: drop control characters, trim, cap length
     const clean = (k, max) => String(raw.get(k) || "").replace(/[\u0000-\u0009\u000B-\u001F\u007F]/g, " ").trim().slice(0, max);
@@ -65,15 +110,15 @@
     const lines = [
       "Hello Radha Madhav Aqua,",
       "",
-      `Name: ${d.get("name")}`,
-      `Phone: ${d.get("phone")}`,
+      `Name: ${d.get("name").replace(/\s+/g, " ")}`,
+      `Phone: +91 ${mobile.slice(0, 5)} ${mobile.slice(5)}`,
       `Product: ${d.get("product")}`,
       d.get("qty") ? `Quantity: ${d.get("qty")}` : "",
       d.get("message") ? `Message: ${d.get("message")}` : "",
     ].filter((l, i) => l !== "" || i === 1);
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\n"))}`;
     window.open(url, "_blank", "noopener");
-    note.textContent = "Opening WhatsApp… just tap send!";
+    showNote("Opening WhatsApp… just tap send!", false);
     form.reset();
   });
 

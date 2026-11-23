@@ -50,7 +50,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
 
   .hero { padding: 110px 0 130px; }
   .hero__inner { grid-template-columns: 1fr; gap: 1rem; text-align: center; }
-  .hero__copy .eyebrow { justify-content: center; }
+  .hero__copy .eyebrow { justify-content: center; letter-spacing: .14em; }
   .hero__lead { margin-inline: auto; }
   .hero__actions, .hero__stats { justify-content: center; }
   .hero__visual { min-height: 340px; }
@@ -124,7 +124,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
   .bulk .btn { width: 100%; }
 
   .contact__list a, .contact__list address { font-size: 1rem; }
-  .contact__list a { display: inline-block; padding: .35rem 0; word-break: break-word; }
+  .contact__list a { display: inline-block; padding: .5rem 0; word-break: break-word; }
   .contact__form { padding: 1.4rem; border-radius: 20px; }
   .map { margin-top: 2.5rem; border-radius: 18px; }
   .map iframe { height: 280px; }
@@ -141,6 +141,8 @@ a, button { -webkit-tap-highlight-color: transparent; }
 
 /* ---------- ≤420 : small phone – horizontal product cards ---------- */
 @media (max-width: 420px) {
+  .hero__copy .eyebrow::before { display: none; }
+  .hero__copy .eyebrow { letter-spacing: .1em; }
   .product-grid { grid-template-columns: 1fr; gap: .8rem; }
   .product {
     display: grid; grid-template-columns: 76px 1fr; column-gap: 1rem;

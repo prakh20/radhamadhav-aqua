@@ -25,10 +25,10 @@
   <link rel="preload" href="assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="css/fonts.css?v=c20cf86ba6" />
-  <link rel="stylesheet" href="css/style.css?v=13977ed1c1" />
+  <link rel="stylesheet" href="css/style.css?v=7276cede1d" />
   <link rel="stylesheet" href="css/motion.css?v=c1dc3c3e8a" />
   <link rel="stylesheet" href="css/visuals.css?v=35e5a3795b" />
-  <link rel="stylesheet" href="css/responsive.css?v=096a8b0b79" />
+  <link rel="stylesheet" href="css/responsive.css?v=5849bdcc89" />
   <noscript><link rel="stylesheet" href="css/noscript.css?v=ed7dc9f102" /></noscript>
   <link rel="canonical" href="https://radhamadavgroup.com/" />
 
@@ -376,11 +376,14 @@
         <h3>Quick Enquiry</h3>
         <label>
           Your name
-          <input type="text" name="name" required maxlength="60" autocomplete="name" placeholder="e.g. Ramesh Sahu" />
+          <input type="text" name="name" required minlength="2" maxlength="60" autocomplete="name" placeholder="e.g. Ramesh Sahu" />
         </label>
         <label>
-          Phone number
-          <input type="tel" name="phone" required maxlength="15" pattern="[0-9+\s\-]{10,15}" inputmode="tel" autocomplete="tel" placeholder="10-digit mobile number" />
+          Mobile number
+          <span class="phone-field">
+            <span class="phone-field__cc" aria-hidden="true">+91</span>
+            <input type="tel" name="phone" required maxlength="20" pattern="[6-9][0-9]{9}" inputmode="numeric" autocomplete="tel-national" placeholder="98765 43210" aria-label="10-digit Indian mobile number" />
+          </span>
         </label>
         <div class="form-row">
           <label>
@@ -470,6 +473,6 @@
     <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3a.5.5 0 0 0 0-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3Z"/></svg>
   </a>
 
-  <script src="js/main.js?v=665da49c0b" defer></script>
+  <script src="js/main.js?v=bb42c81205" defer></script>
 </body>
 </html>
