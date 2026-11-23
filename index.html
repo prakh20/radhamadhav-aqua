@@ -103,7 +103,7 @@
         </div>
         <ul class="hero__stats">
           <li><strong>6-stage</strong><span>purification</span></li>
-          <li><strong>RO · UV · Ozone</strong><span>treatment</span></li>
+          <li><strong>RO + UV</strong><span>+ ozone treatment</span></li>
           <li><strong>Automatic</strong><span>filling &amp; sealing</span></li>
         </ul>
       </div>
@@ -409,21 +409,21 @@
     </div>
 
     <div class="container map reveal">
-      <!-- Click-to-load map: Google Maps (~hundreds of KB) only loads if the visitor asks for it -->
-      <div class="map-facade" id="mapFacade"
+      <!-- Real Google map, loaded automatically when it scrolls near (keeps first page load light) -->
+      <div class="map-frame" id="mapFrame"
            data-src="https://www.google.com/maps?q=Dengamancha,Sinapali,Nuapada,Odisha+766108&amp;output=embed">
-        <div class="map-facade__art" aria-hidden="true">
-          <span class="road r1"></span><span class="road r2"></span><span class="road r3"></span>
-          <span class="pin"></span>
-        </div>
-        <div class="map-facade__card">
+        <div class="map-loading" aria-hidden="true"><span class="map-spinner"></span>Loading map…</div>
+      </div>
+      <div class="map-bar">
+        <div class="map-bar__text">
           <strong>Dengamancha, Sinapali</strong>
           <span>Nuapada, Odisha – 766108</span>
-          <div class="map-facade__actions">
-            <button type="button" class="btn btn--small" id="mapLoad">Show map</button>
-            <a class="btn btn--small btn--light" href="https://www.google.com/maps/search/?api=1&amp;query=Dengamancha%2C+Sinapali%2C+Nuapada%2C+Odisha+766108"
-               target="_blank" rel="noopener noreferrer">Open in Google Maps</a>
-          </div>
+        </div>
+        <div class="map-bar__actions">
+          <a class="btn btn--small" href="https://www.google.com/maps/dir/?api=1&amp;destination=Dengamancha%2C+Sinapali%2C+Nuapada%2C+Odisha+766108"
+             target="_blank" rel="noopener noreferrer">Get directions</a>
+          <a class="btn btn--small btn--light" href="https://www.google.com/maps/search/?api=1&amp;query=Dengamancha%2C+Sinapali%2C+Nuapada%2C+Odisha+766108"
+             target="_blank" rel="noopener noreferrer">Open in Maps</a>
         </div>
       </div>
     </div>

@@ -310,37 +310,45 @@
 /* Images keep their aspect ratio now that width/height attributes are set */
 .about__media img { height: auto; }
 
-/* ---------- Click-to-load map ---------- */
-.map-facade {
-  position: relative; height: 360px; display: grid; place-items: center;
-  background:
-    linear-gradient(0deg, rgba(255,255,255,.55), rgba(255,255,255,.55)),
-    repeating-linear-gradient(0deg, #e3edf6 0 1px, transparent 1px 46px),
-    repeating-linear-gradient(90deg, #e3edf6 0 1px, transparent 1px 46px),
-    linear-gradient(135deg, #eef6ea, #e7f1fa);
-  overflow: hidden;
+/* ---------- Map ---------- */
+.map { background: var(--white); }
+.map-frame {
+  position: relative; height: 380px;
+  background: linear-gradient(110deg, #eef4f9 30%, #f8fbfe 50%, #eef4f9 70%);
+  background-size: 200% 100%; animation: mapShimmer 1.6s linear infinite;
 }
-.map-facade__art { position: absolute; inset: 0; pointer-events: none; }
-.map-facade .road { position: absolute; background: #fff; box-shadow: 0 0 0 1px #dbe6f0; border-radius: 6px; }
-.map-facade .r1 { left: -10%; right: -10%; top: 58%; height: 14px; transform: rotate(-8deg); }
-.map-facade .r2 { top: -10%; bottom: -10%; left: 36%; width: 12px; transform: rotate(12deg); }
-.map-facade .r3 { left: 55%; right: -10%; top: 24%; height: 9px; transform: rotate(18deg); background: #fdf3d6; }
-.map-facade .pin {
-  position: absolute; left: 50%; top: 40%; width: 34px; height: 34px; margin: -34px 0 0 -17px;
-  background: #e0475b; border-radius: 50% 50% 50% 0; transform: rotate(-45deg);
-  box-shadow: 0 8px 16px -6px rgba(224,71,91,.7);
-  animation: pinDrop 2.6s ease-in-out infinite;
+.map-frame.is-loaded { animation: none; background: #eef4f9; }
+@keyframes mapShimmer { to { background-position: -200% 0; } }
+.map .map-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+.map-loading {
+  position: absolute; inset: 0; display: flex; gap: .6rem; align-items: center; justify-content: center;
+  color: var(--muted); font-weight: 600; font-size: .95rem;
 }
-.map-facade .pin::after { content: ""; position: absolute; inset: 10px; border-radius: 50%; background: #fff; }
-@keyframes pinDrop { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
-.map-facade__card {
-  position: relative; margin-top: 7rem; background: #fff; border-radius: 16px; padding: 1rem 1.2rem;
-  box-shadow: var(--shadow); text-align: center; display: grid; gap: .15rem; max-width: 92%;
+.map-frame.is-loaded .map-loading { display: none; }
+.map-spinner {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 2.5px solid rgba(27,74,168,.2); border-top-color: var(--royal);
+  animation: spin .8s linear infinite;
 }
-.map-facade__card strong { color: var(--navy); font-family: var(--font-display); font-size: 1.1rem; }
-.map-facade__card > span { color: var(--muted); font-size: .9rem; }
-.map-facade__actions { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; margin-top: .7rem; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.map-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  padding: 1rem 1.3rem; border-top: 1px solid #e3ecf6;
+}
+.map-bar__text { display: grid; }
+.map-bar__text strong { color: var(--navy); font-family: var(--font-display); font-size: 1.1rem; }
+.map-bar__text span { color: var(--muted); font-size: .9rem; }
+.map-bar__actions { display: flex; flex-wrap: wrap; gap: .6rem; }
 .btn--light { background: #fff; color: var(--navy); border-color: #d6e2ef; box-shadow: none; }
 .btn--light:hover { box-shadow: none; background: var(--bg); }
-@media (max-width: 600px) { .map-facade { height: 280px; } .map-facade__card { margin-top: 5rem; } }
-@media (prefers-reduced-motion: reduce) { .map-facade .pin { animation: none; } }
+@media (max-width: 600px) {
+  .map-frame { height: 300px; }
+  .map-bar { padding: 1rem; }
+  .map-bar__actions { width: 100%; }
+  .map-bar__actions .btn { flex: 1 1 0; padding: .8em .6em; }
+}
+@media (prefers-reduced-motion: reduce) { .map-frame, .map-spinner { animation-duration: 3s; } }
+
+/* Floating WhatsApp button hides while the contact section is on screen */
+.wa-float { transition: transform .25s ease, opacity .25s ease; }
+.wa-float.is-hidden { opacity: 0; transform: scale(.6); pointer-events: none; }

@@ -79,21 +79,41 @@
 
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  // Click-to-load Google Map (saves a large third-party download for most visitors)
-  const facade = document.getElementById("mapFacade");
-  const mapBtn = document.getElementById("mapLoad");
-  if (facade && mapBtn) {
-    mapBtn.addEventListener("click", () => {
-      const src = facade.dataset.src || "";
+  // Google Map: insert the iframe only when the map scrolls near the viewport
+  const mapFrame = document.getElementById("mapFrame");
+  if (mapFrame) {
+    const loadMap = () => {
+      if (mapFrame.dataset.loaded) return;
+      const src = mapFrame.dataset.src || "";
       if (!src.startsWith("https://www.google.com/maps")) return; // only ever embed Google Maps
+      mapFrame.dataset.loaded = "1";
       const frame = document.createElement("iframe");
       frame.title = "Radha Madhav Aqua location – Sinapali, Nuapada";
       frame.src = src;
       frame.referrerPolicy = "strict-origin-when-cross-origin";
       frame.setAttribute("sandbox", "allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox");
       frame.allowFullscreen = true;
-      facade.replaceWith(frame);
-    }, { once: true });
+      frame.addEventListener("load", () => mapFrame.classList.add("is-loaded"));
+      mapFrame.appendChild(frame);
+    };
+    if ("IntersectionObserver" in window) {
+      const mo = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) { loadMap(); mo.disconnect(); }
+      }, { rootMargin: "400px 0px" });
+      mo.observe(mapFrame);
+    } else {
+      loadMap();
+    }
+  }
+
+  // Hide the floating WhatsApp button while the contact section is on screen
+  // (it already has WhatsApp/call buttons, and the float would cover the form)
+  const waFloat = document.querySelector(".wa-float");
+  const contact = document.getElementById("contact");
+  if (waFloat && contact && "IntersectionObserver" in window) {
+    new IntersectionObserver((entries) => {
+      entries.forEach((e) => waFloat.classList.toggle("is-hidden", e.isIntersecting));
+    }, { threshold: 0.12 }).observe(contact);
   }
 
   /* ---------------- Motion ---------------- */

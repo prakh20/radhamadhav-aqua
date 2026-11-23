@@ -66,5 +66,6 @@ Referrer-Policy: strict-origin-when-cross-origin
 ## Performance notes
 - **Fonts are self-hosted** (`assets/fonts/`, Latin subset, variable weight) and the two used above the fold are preloaded. No requests go to Google on page load. Licence: `assets/fonts/LICENSE.md` (SIL OFL 1.1).
 - **Images:** `logo-128.webp` (header/footer) and `logo-640.webp` (About) replace the 113 KB JPEG on the page. `logo.jpg` is kept only for link previews (WhatsApp/Facebook need JPEG/PNG). Favicons: `favicon-32.png`, `favicon-48.png`, `apple-touch-icon.png`.
-- **Map is click-to-load:** a lightweight placeholder with "Show map" and "Open in Google Maps"; the Google iframe is only created when the visitor taps "Show map".
+- **Map loads on demand:** the Google Maps iframe is only inserted when the map scrolls within ~400px of the screen, so visitors who never reach the bottom never download it. "Get directions" and "Open in Maps" buttons sit under it (and work without JavaScript).
+- **Floating WhatsApp button** hides while the contact section is on screen so it never covers the form.
 - **Caching:** GitHub Pages sends `Cache-Control: max-age=600` plus ETag/Last-Modified, so repeat visits are served from the browser cache and updates show within ~10 minutes. No service worker is used on purpose (avoids stale contact details).
