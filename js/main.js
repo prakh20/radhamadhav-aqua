@@ -79,6 +79,23 @@
 
   document.getElementById("year").textContent = new Date().getFullYear();
 
+  // Click-to-load Google Map (saves a large third-party download for most visitors)
+  const facade = document.getElementById("mapFacade");
+  const mapBtn = document.getElementById("mapLoad");
+  if (facade && mapBtn) {
+    mapBtn.addEventListener("click", () => {
+      const src = facade.dataset.src || "";
+      if (!src.startsWith("https://www.google.com/maps")) return; // only ever embed Google Maps
+      const frame = document.createElement("iframe");
+      frame.title = "Radha Madhav Aqua location – Sinapali, Nuapada";
+      frame.src = src;
+      frame.referrerPolicy = "strict-origin-when-cross-origin";
+      frame.setAttribute("sandbox", "allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox");
+      frame.allowFullscreen = true;
+      facade.replaceWith(frame);
+    }, { once: true });
+  }
+
   /* ---------------- Motion ---------------- */
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const canHover = window.matchMedia("(hover: hover)").matches;
