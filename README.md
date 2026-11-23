@@ -39,3 +39,26 @@ Alternatives that work just as well: Netlify (drag-and-drop the folder) or GitHu
 - [ ] Update `og:image` in `index.html` to the full URL (`https://yourdomain/assets/logo.jpg`) once the domain is live.
 - [ ] Create a free **Google Business Profile** for the plant, which matters most for local search and Maps.
 - [ ] Set the map pin: replace the iframe `src` with the exact embed link from Google Maps → Share → Embed.
+
+## Security & production notes
+- **No backend, no database, no cookies, no stored user data.** The enquiry form never submits anywhere; it only opens WhatsApp with a pre-filled message (`form-action 'none'` blocks native submission).
+- **Content-Security-Policy** (meta tag in `index.html` / `404.html`): only this site, Google Fonts and the Google Maps iframe may load. No inline scripts or inline styles are allowed, and Trusted Types are required.
+  If you add a new external service (analytics, chat widget, etc.) you must add its origin to the CSP or it will be blocked.
+- **Never add `style="..."` attributes or inline `<script>`**; put styles in `css/` and code in `js/`.
+- External links use `rel="noopener noreferrer"`; the map iframe is sandboxed; referrer policy is `strict-origin-when-cross-origin`.
+- Form input is length-limited in HTML and cleaned in JS (control characters removed, trimmed, capped).
+- Without JavaScript the page still shows all content (`css/noscript.css`).
+- `404.html` uses `<base href="/radhamadhav-aqua/">` — change it to `/` when a custom domain is added.
+
+### Limits of GitHub Pages
+GitHub Pages can't send custom HTTP headers, so these can't be set yet: `Strict-Transport-Security` (github.io is already HSTS-preloaded), `X-Frame-Options` / CSP `frame-ancestors` (clickjacking), `Permissions-Policy`, `X-Content-Type-Options` (GitHub already sends `nosniff`).
+When a custom domain is bought, put **Cloudflare** (free) in front and add these headers with a Transform Rule:
+```
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+X-Frame-Options: DENY
+Content-Security-Policy: frame-ancestors 'none'
+Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+```
+`robots.txt` and `.well-known/security.txt` only take effect at a domain root, i.e. after moving to a custom domain.

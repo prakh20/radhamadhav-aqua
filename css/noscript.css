@@ -1,0 +1,7 @@
+/* Loaded only when JavaScript is disabled: show everything that normally animates in */
+.reveal, .mv-list li { opacity: 1 !important; transform: none !important; }
+.contact__form button[type="submit"] { display: none; }
+.contact__form::after {
+  content: "Please call or WhatsApp us on +91 78530 34678 to place an order.";
+  font-weight: 600; color: #0f2a63;
+}

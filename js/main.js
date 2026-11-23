@@ -58,7 +58,10 @@
       note.textContent = "Please enter your name and a valid phone number.";
       return;
     }
-    const d = new FormData(form);
+    const raw = new FormData(form);
+    // Clean user input: drop control characters, trim, cap length
+    const clean = (k, max) => String(raw.get(k) || "").replace(/[\u0000-\u0009\u000B-\u001F\u007F]/g, " ").trim().slice(0, max);
+    const d = { get: (k) => clean(k, { name: 60, phone: 15, product: 40, qty: 40, message: 500 }[k] || 100) };
     const lines = [
       "Hello Radha Madhav Aqua,",
       "",

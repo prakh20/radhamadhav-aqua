@@ -298,3 +298,11 @@
   .values li, .a-blink svg { animation: none; }
   .mv-list li { transform: none; }
 }
+
+/* Per-item variables (kept out of inline style="" so a strict CSP can block inline styles) */
+.product.h55 { --h: .55; }
+.product.h70 { --h: .7; }
+.product.h85 { --h: .85; }
+.product.h100 { --h: 1; }
+.stage.s0 { --s: 0; } .stage.s1 { --s: 1; } .stage.s2 { --s: 2; }
+.stage.s3 { --s: 3; } .stage.s4 { --s: 4; } .stage.s5 { --s: 5; }
